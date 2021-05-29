@@ -14,6 +14,7 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     implementation("com.google.guava:guava:28.1-jre")
+    implementation("org.seleniumhq.selenium:selenium-java:3.141.59")
 
     // Use JUnit test framework
     testImplementation("junit:junit:4.12")
