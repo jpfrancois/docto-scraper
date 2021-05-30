@@ -2,7 +2,9 @@ package docto.scraper;
 
 import docto.scraper.application.cli.CliController;
 import docto.scraper.domain.Eligibility;
-import docto.scraper.domain.Search;
+import docto.scraper.domain.service.DomainScrapingService;
+import docto.scraper.infrastructure.config.ChromeConfig;
+import docto.scraper.infrastructure.scraping.SeleniumScraper;
 
 import java.util.Arrays;
 
@@ -12,11 +14,12 @@ public class App {
     public static void main(String[] args) {
         validateArgs(args);
 
-        var eligibility = (args.length < 2 ? DEFAULT_ELIGIBILITY : Eligibility.valueOf(args[1]));
-        var search = new Search(args[0], eligibility);
+        var scraper = new SeleniumScraper(new ChromeConfig());
+        var scrapingService = new DomainScrapingService(scraper);
+        var controller = new CliController(scrapingService);
 
-        var controller = new CliController();
-        controller.search(search);
+        var eligibility = (args.length < 2 ? DEFAULT_ELIGIBILITY : Eligibility.valueOf(args[1]));
+        controller.search(args[0], eligibility);
     }
 
     private static void validateArgs(String[] args) {

@@ -25,7 +25,7 @@ public class SeleniumScraper implements Scraper {
     private static final long WAIT_INTERVAL_MILLIS = 1000;
     private static final int SCROLLS = 8;
 
-    private static final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+    private static final DateTimeFormatter FORMATTER = new DateTimeFormatterBuilder()
             .appendPattern("EEE d MMMM HH:mm")
             .parseDefaulting(ChronoField.YEAR, LocalDate.now().getYear())
             .toFormatter().withLocale(Locale.FRANCE);
@@ -80,7 +80,7 @@ public class SeleniumScraper implements Scraper {
     @Override
     public void scrollToBottom() {
         // Result loading triggering works better when slowly scrolling down
-        for (int i = 0; i < SCROLLS; i++) {
+        for (var i = 0; i < SCROLLS; i++) {
             driver.executeScript("window.scrollBy(0,500)");
             waitForLoading();
         }
@@ -96,14 +96,14 @@ public class SeleniumScraper implements Scraper {
 
     @Override
     public List<SearchResult> findResults() {
-        SearchResult searchResult = SearchResult.builder()
+        var searchResult = SearchResult.builder()
                 .id("someId")
                 .presentation(Presentation.builder().build())
                 .timeSlots(new ArrayList<>())
                 .build();
         driver.findElements(By.className("availabilities-slot")).stream()
                 .map(date -> date.getAttribute("title"))
-                .map(text -> LocalDateTime.parse(text, formatter))
+                .map(text -> LocalDateTime.parse(text, FORMATTER))
                 .forEach(date -> searchResult.getTimeSlots().add(date));
         return Collections.singletonList(searchResult);
     }
