@@ -1,5 +1,10 @@
 package docto.scraper.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Eligibility {
     PLUS_55("eligibility-0"),
     PLUS_18("eligibility-1"),
@@ -9,12 +14,4 @@ public enum Eligibility {
     GOV_OFFICIAL("eligibility-5");
 
     private final String id;
-
-    Eligibility(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
 }
